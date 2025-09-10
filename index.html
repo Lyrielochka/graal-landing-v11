@@ -111,9 +111,10 @@
 </head>
 <body>
   <!-- Прелоадер (добавлено) -->
-  <div id="preloader" aria-live="polite" aria-busy="true">
-    <img src="preloader.gif" alt="Загрузка...">
-  </div>
+<div id="preloader" aria-live="polite" aria-busy="true">
+  <img src="preloader.gif" alt="Загрузка...">
+</div>
+<script>window.__plStart = Date.now();</script>
 
   <div class="progress" id="progress"></div>
   <div id="bgdark"></div>
@@ -345,14 +346,32 @@
 
     document.getElementById('year').textContent=new Date().getFullYear();
 
-    /* === Скрытие прелоадера (добавлено) === */
-    window.addEventListener('load', () => {
-      const pl = document.getElementById('preloader');
-      if(pl){
-        // небольшая задержка, чтобы избежать резкой вспышки
-        setTimeout(()=> pl.classList.add('hidden'), 150);
-      }
-    });
+   /* === Скрытие прелоадера c минимумом 5 секунд === */
+(function(){
+  const MIN_SHOW = 1500; // 5s минимум
+  const HARD_CAP = 15000; // защита, чтобы не висел бесконечно (15s)
+
+  function hide(){
+    const pl = document.getElementById('preloader');
+    if(pl) pl.classList.add('hidden');
+  }
+
+  // если страница загрузится быстро — досидим остаток до 5s
+  window.addEventListener('load', () => {
+    const started = window.__plStart || Date.now();
+    const elapsed = Date.now() - started;
+    const remain = Math.max(0, MIN_SHOW - elapsed);
+    setTimeout(hide, remain);
+  });
+
+  // на всякий случай уберём прелоадер через HARD_CAP, даже если load не пришёл
+  setTimeout(() => {
+    const started = window.__plStart || Date.now();
+    const elapsed = Date.now() - started;
+    if (elapsed >= MIN_SHOW) hide();
+  }, HARD_CAP);
+})();
+
   </script>
 
   <!-- Fallback для тех, у кого отключён JS -->
