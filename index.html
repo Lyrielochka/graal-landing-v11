@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Graal Studio — проекты со смыслом</title>
-  <meta name="description" content="Graal Studio: лендинги, школьные ресурсы, свадебные мини-порталы и корпоративные веб-площадки. Тёмно-золотая эстетика, анимированный фон и читабельные шрифты." />
+  <title>Mordred Forge — проекты со смыслом</title>
+  <meta name="description" content="Mordred Forge: лендинги, школьные ресурсы, свадебные мини-порталы и корпоративные веб-площадки. Тёмно-золотая эстетика, анимированный фон и читабельные шрифты." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
@@ -143,8 +143,8 @@
 
   <header>
     <div class="wrap nav">
-      <a class="brand" href="#top" aria-label="Graal Studio">
-        <img src="logo.png" alt="Graal Studio логотип"><b>Graal Studio</b>
+      <a class="brand" href="#top" aria-label="Mordred Forge">
+        <img src="logo.png" alt="Mordred Forge логотип"><b>Mordred Forge</b>
       </a>
       <div class="actions">
         <a class="btn ghost" href="https://t.me/graal.studio" target="_blank" rel="noopener">
@@ -295,7 +295,7 @@
 
   <footer>
     <div class="wrap foot">
-      <img src="logo.png" alt="Graal Studio"><span>© <b id="year"></b> Graal Studio · Все права защищены</span>
+      <img src="logo.png" alt="Mordred Forge"><span>© <b id="year"></b> Mordred Forge · Все права защищены</span>
     </div>
   </footer>
 
@@ -333,7 +333,7 @@
 
     /* Mailto форма */
     const form=document.getElementById('lead');const note=document.getElementById('formNote');
-    form?.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form);const name=String(data.get('name')||'').trim();const contact=String(data.get('contact')||'').trim();if(!name||!contact){note.textContent='Пожалуйста, заполните имя и контакт.';note.style.color='#ffca58';return}const subject=encodeURIComponent('Заявка с проекта Graal Studio');const body=encodeURIComponent([`Имя: ${name}`,`Контакт: ${contact}`,`Тип: ${data.get('type')}`,`Бюджет: ${data.get('budget')}`,`Сообщение: ${data.get('message')||''}`].join('\n'));location.href=`mailto:hello@graal.studio?subject=${subject}&body=${body}`;note.textContent='Готово! Откроется почтовый клиент.';note.style.color='#28d17c';form.reset()});
+    form?.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form);const name=String(data.get('name')||'').trim();const contact=String(data.get('contact')||'').trim();if(!name||!contact){note.textContent='Пожалуйста, заполните имя и контакт.';note.style.color='#ffca58';return}const subject=encodeURIComponent('Заявка с проекта Mordred Forge');const body=encodeURIComponent([`Имя: ${name}`,`Контакт: ${contact}`,`Тип: ${data.get('type')}`,`Бюджет: ${data.get('budget')}`,`Сообщение: ${data.get('message')||''}`].join('\n'));location.href=`mailto:hello@graal.studio?subject=${subject}&body=${body}`;note.textContent='Готово! Откроется почтовый клиент.';note.style.color='#28d17c';form.reset()});
 
     /* NEW: мини-кнопки ведут к анкете + подставляем тип проекта */
     document.querySelectorAll('.mini-cta').forEach(btn=>{
