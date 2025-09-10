@@ -8,8 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
   <style>
     :root{
       --bg:#07090c; --ink:#ecf1f8; --muted:#a9b5c9; --gold:#e2c06b; --gold-2:#ad8b3f;
@@ -22,9 +20,9 @@
     .wrap{width:min(1120px,92vw);margin-inline:auto;padding-inline:22px}
     #bgdark{position:fixed;inset:0;z-index:-2;background:radial-gradient(55% 50% at 50% 45%,#05070a 0%,#020305 70%)}
     #bgfx{position:fixed;inset:0;z-index:-1;pointer-events:none;mix-blend-mode:screen;opacity:.78}
-    .progress{position:fixed;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,transparent,var(--gold));transform-origin:0 50%;transform:scaleX(0);z-index:50;box-shadow:0 0 16px rgba(226,192,107,.35)}
+    .progress{position:fixed;inset:0 0 авто 0;height:3px;background:linear-gradient(90deg,transparent,var(--gold));transform-origin:0 50%;transform:scaleX(0);z-index:50;box-shadow:0 0 16px rgba(226,192,107,.35)}
 
-    /* === Прелоадер (Lottie + fallback) === */
+    /* === Простой прелоадер: только спиннер === */
     #preloader{
       position:fixed; inset:0;
       display:flex; align-items:center; justify-content:center;
@@ -33,14 +31,16 @@
       transition:opacity .35s ease, visibility .35s ease;
     }
     #preloader.hidden{opacity:0; visibility:hidden}
-    #preloader .holder{
-      width:clamp(120px, 18vw, 220px);
-      aspect-ratio:1/1;
-      display:grid; place-items:center;
+    #preloader .holder{display:grid;place-items:center}
+    .spinner{
+      width:56px; height:56px; border-radius:50%;
+      border:6px solid rgba(226,192,107,.25);
+      border-top-color:rgba(226,192,107,.9);
+      animation:spin .9s linear infinite;
     }
-    #preloader .fallback{display:none; place-items:center}
     @media (prefers-reduced-motion:reduce){
       #preloader{transition:none}
+      .spinner{animation:none}
     }
     /* === конец добавленного === */
 
@@ -82,7 +82,7 @@
     .copy{color:#e8ecf6}
     .orn{width:96px;height:10px;margin:12px auto;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(226,192,107,.65),transparent)}
     .price-line{display:flex;justify-content:center;gap:8px;margin-top:8px;font-weight:800;color:#f5f7fd}
-    .mini-cta{position:relative;z-index:2; margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));font-weight:800}
+    .mini-cta{position:relative;z-index:2; /* NEW: поверх бликов */ margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));font-weight:800}
     .mini-cta:hover{border-color:rgba(255,255,255,.26)}
     .card.universal{grid-column:span 12}
     .card.universal .tag{background:linear-gradient(180deg,rgba(226,192,107,.9),rgba(173,139,63,.9))}
@@ -96,7 +96,7 @@
     .select{position:relative;user-select:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:0;color:var(--ink)}
     .select-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 14px;background:transparent;border:0;color:inherit;font:inherit;border-radius:14px;cursor:pointer}
     .select-btn:focus{outline:none;box-shadow:0 0 0 3px rgba(226,192,107,.18)}
-    .select-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--chip);color:var(--ink);border:1px solid #223149;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.6);padding:6px;display:none;z-index:20;max-height:240px;overflow:auto}
+    .select-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--chip);color:var(--ink);border:1px solid #223149;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.6);padding:6px;display:none;з-index:20;max-height:240px;overflow:auto}
     .select.open .select-list{display:block}
     .option{text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer}
     .option[aria-selected="true"],.option:hover{background:#0b0f1d}
@@ -111,37 +111,14 @@
     .reveal{opacity:0;transform:translateY(16px);transition:.8s cubic-bezier(.2,.8,.2,1)} .reveal.in{opacity:1;transform:none}
     @media (prefers-reduced-motion:reduce){#bgfx{opacity:.35}.spin{animation:none}.reveal{opacity:1;transform:none}}
   </style>
-
-  <!-- dotlottie web-component (для .lottie) -->
-  <script type="module" crossorigin="anonymous"
-    src="https://cdn.jsdelivr.net/npm/@dotlottie/player-component@2.8.1/dist/dotlottie-player.mjs">
-  </script>
 </head>
 <body>
-  <!-- Прелоадер: Lottie с запасным спиннером -->
+  <!-- Прелоадер: только альтернативный спиннер -->
   <div id="preloader" aria-live="polite" aria-busy="true">
-    <div class="holder" id="lottieHolder">
-      <dotlottie-player id="pl"
-        src="Sworddrawn.lottie"
-        autoplay
-        loop
-        renderer="canvas"
-        speed="1"
-        style="width:100%;height:100%">
-      </dotlottie-player>
-
-      <!-- Fallback спиннер (покажется, если плеер не загрузится) -->
-      <div class="fallback" aria-hidden="true">
-        <svg viewBox="0 0 50 50" width="56" height="56" role="img" aria-label="Загрузка">
-          <circle cx="25" cy="25" r="20" fill="none" stroke="rgba(226,192,107,.25)" stroke-width="6"/>
-          <path d="M25 5 A 20 20 0 0 1 45 25" fill="none" stroke="rgba(226,192,107,.9)" stroke-width="6" stroke-linecap="round">
-            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.9s" repeatCount="indefinite"/>
-          </path>
-        </svg>
-      </div>
+    <div class="holder">
+      <div class="spinner" role="img" aria-label="Загрузка"></div>
     </div>
   </div>
-  <script>window.__plStart = Date.now();</script>
 
   <div class="progress" id="progress"></div>
   <div id="bgdark"></div>
@@ -172,7 +149,7 @@
       <div class="actions">
         <a class="btn ghost" href="https://t.me/graal.studio" target="_blank" rel="noopener">
           <span class="tg" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M9.5 15.3l-.2 3c.3 0 .5-.1.6-.2l1.4-1.3 2.9 2.1c.5.3.9.1 1-.5л2-9.6c.2-.8-.3-1.1-.8-1L4.7 10c-.8.2-.8.6-.1.8l3.5 1.1 8.1-5.1-6.7 6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9.5 15.3l-.2 3c.3 0 .5-.1.6-.2l1.4-1.3 2.9 2.1c.5.3.9.1 1-.5l2-9.6c.2-.8-.3-1.1-.8-1L4.7 10c-.8.2-.8.6-.1.8л3.5 1.1 8.1-5.1-6.7 6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>Telegram
         </a>
         <a class="btn ghost" href="#contact">Связаться</a>
@@ -373,44 +350,10 @@
 
     document.getElementById('year').textContent=new Date().getFullYear();
 
-    /* === Гарантированный минимум 5s + watchdog для Lottie === */
-    (function(){
-      const MIN_SHOW = 5000;   // минимум 5s
-      const HARD_CAP = 15000;  // предохранитель 15s
-      const holder = document.getElementById('lottieHolder');
-      const fallback = holder?.querySelector('.fallback');
-      const player = document.getElementById('pl');
-
-      function showFallback(){
-        if (fallback) fallback.style.display = 'grid';
-      }
-      // Если веб-компонент не определён быстро — включаем запаску
-      const checkDefined = () => !!customElements.get('dotlottie-player');
-      if (!checkDefined()){
-        setTimeout(() => { if (!checkDefined()) showFallback(); }, 800);
-      }
-
-      // Если плеер отдаст ошибку — покажем запаску
-      player?.addEventListener('error', showFallback);
-
-      function hidePreloader(){
-        const pl = document.getElementById('preloader');
-        if (pl) pl.classList.add('hidden');
-      }
-
-      window.addEventListener('load', () => {
-        const started = window.__plStart || Date.now();
-        const elapsed = Date.now() - started;
-        const remain = Math.max(0, MIN_SHOW - elapsed);
-        setTimeout(hidePreloader, remain);
-      });
-
-      // Если load не пришёл — снимем по предохранителю (но не раньше 5s)
-      setTimeout(() => {
-        const started = window.__plStart || Date.now();
-        if (Date.now() - started >= MIN_SHOW) hidePreloader();
-      }, HARD_CAP);
-    })();
+    /* === Скрываем прелоадер сразу после полной загрузки страницы === */
+    window.addEventListener('load', () => {
+      document.getElementById('preloader')?.classList.add('hidden');
+    });
   </script>
 
   <!-- Fallback при отключённом JS: не показывать прелоадер -->
