@@ -12,58 +12,22 @@
     :root{
       --bg:#07090c; --ink:#ecf1f8; --muted:#a9b5c9; --gold:#e2c06b; --gold-2:#ad8b3f;
       --line:#1a2230; --radius:20px; --shadow:0 24px 70px rgba(0,0,0,.7); --chip:#0d1322;
-
-      /* УКАЖИ СВОЙ ФАЙЛ ЛОГОТИПА ДЛЯ ФОНА: PNG/SVG рядом со страницей */
-      --logo-bg: url("logo-bg.png");
     }
-
     *{box-sizing:border-box}
-    html,body{height:100%}
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;color:var(--ink);
-      font:16px/1.65 Manrope,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      background:var(--bg);
-      overflow-x:hidden;text-align:center; position:relative;
-    }
-
-    /* === БОЛЬШОЙ РАЗМЫТЫЙ ФОН ИЗ ЛОГОТИПА (ТОЧНО ВИДЕН) === */
-    body::before{
-      content:"";
-      position:fixed; inset:-15%;
-      z-index:-2; /* ЛОГОТИП выше #bgdark (-3), ниже canvas (-1) */
-      pointer-events:none;
-      background: var(--logo-bg) no-repeat center;
-      background-size: 120vmin;   /* размер лого на экране */
-      filter: blur(46px);
-      opacity:.22;                /* при желании увеличь/уменьши */
-      transform: translateZ(0);
-    }
-    @media (max-width:680px){
-      body::before{ background-size:150vmin; filter:blur(38px); opacity:.18; }
-    }
-
+    html,body{height:100%} html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);font:16px/1.65 Manrope,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);overflow-x:hidden;text-align:center}
     a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
     .wrap{width:min(1120px,92vw);margin-inline:auto;padding-inline:22px}
-
-    /* СЛОИ ФОНА */
-    #bgdark{position:fixed;inset:0;z-index:-3; /* ниже логотипа */
-      background:radial-gradient(55% 50% at 50% 45%,#05070a 0%,#020305 70%)}
-    #bgfx{position:fixed;inset:0;z-index:-1; /* выше логотипа */
-      pointer-events:none;mix-blend-mode:screen;opacity:.78}
-
-    .progress{
-      position:fixed; inset:0 0 auto 0;
-      height:3px;background:linear-gradient(90deg,transparent,var(--gold));
-      transform-origin:0 50%; transform:scaleX(0);
-      z-index:50; box-shadow:0 0 16px rgba(226,192,107,.35)
-    }
+    #bgdark{position:fixed;inset:0;z-index:-2;background:radial-gradient(55% 50% at 50% 45%,#05070a 0%,#020305 70%)}
+    #bgfx{position:fixed;inset:0;z-index:-1;pointer-events:none;mix-blend-mode:screen;opacity:.78}
+    .progress{position:fixed;inset:0 0 авто 0;height:3px;background:linear-gradient(90deg,transparent,var(--gold));transform-origin:0 50%;transform:scaleX(0);z-index:50;box-shadow:0 0 16px rgba(226,192,107,.35)}
 
     /* === Простой прелоадер: только спиннер === */
     #preloader{
-      position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-      background:#07090c; z-index:9999;
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      background:#07090c;
+      z-index:9999;
       transition:opacity .35s ease, visibility .35s ease;
     }
     #preloader.hidden{opacity:0; visibility:hidden}
@@ -78,10 +42,9 @@
       #preloader{transition:none}
       .spinner{animation:none}
     }
+    /* === конец добавленного === */
 
-    header{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px) saturate(120%);
-      background:linear-gradient(180deg,rgba(6,8,12,.85) 0%,rgba(6,8,12,0) 100%);
-      border-bottom:1px solid rgba(255,255,255,.02)}
+    header{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px) saturate(120%);background:linear-gradient(180deg,rgba(6,8,12,.85) 0%,rgba(6,8,12,0) 100%);border-bottom:1px solid rgba(255,255,255,.02)}
     .nav{height:86px;display:flex;align-items:center;justify-content:center;gap:16px}
     .brand{display:flex;align-items:center;gap:12px}
     .brand img{width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 1px rgba(226,192,107,.45)}
@@ -90,87 +53,71 @@
     .btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 16px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,#0c1220,#0a0f1a);box-shadow:var(--shadow);font-weight:800;line-height:1;transition:.3s}
     .btn:hover{transform:translateY(-1px)} .btn.ghost{background:#0d1322;border-color:#223149}
     .btn .tg{width:18px;height:18px;display:inline-block}.btn .tg svg{width:100%;height:100%}
-
     @media (max-width:680px){
       .nav{height:auto;padding:10px 0;flex-wrap:wrap;justify-content:space-between}
       .brand img{width:34px;height:34px} .brand b{font-size:18px;letter-spacing:.4px}
       .actions{order:2;width:100%;justify-content:flex-end;gap:8px;margin-left:0}
       .btn{height:40px;padding:0 12px;border-radius:14px}
     }
-
     .hero{position:relative;padding:clamp(64px,7vw,96px) 0 16px}
     .kicker{color:var(--muted);text-transform:uppercase;letter-spacing:.18em;font-size:12px}
     h1{font-family:"Cinzel",serif;font-weight:900;letter-spacing:.01em;font-size:clamp(38px,6vw,72px);line-height:1.06;margin:8px 0 10px;background:linear-gradient(92deg,var(--ink),#f5f7fd);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 28px rgba(0,0,0,.65)}
     .lead{max-width:900px;margin:0 auto;font-size:clamp(17px,2.2vw,20px);font-weight:600;color:#e3e8f3;text-shadow:0 1px 16px rgba(0,0,0,.55)}
-
     .halo{position:absolute;inset:auto 0 0 0;height:140px;margin:auto;z-index:0;pointer-events:none;opacity:.25;filter:blur(20px)}
     .ornament-wrap{position:fixed;inset:0;display:grid;place-items:center;z-index:0;pointer-events:none;opacity:.15;filter:drop-shadow(0 0 30px rgba(0,0,0,.5))}
     .ornament{width:min(1200px,90vw)} .ornament .stroke{fill:none;stroke:var(--gold);stroke-opacity:.7;stroke-width:1.3}
-    .spin{animation:spin 160s linear infinite}
-    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    .spin{animation:spin 160s linear infinite}@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
     @media (max-width:680px){.ornament-wrap{opacity:.08}.ornament{width:120vw}}
-
     .section{padding:clamp(28px,5vw,48px) 0}
     .section h2{font-family:"Cinzel",serif;font-weight:800;letter-spacing:.01em;font-size:clamp(26px,4.2vw,44px);margin:0 0 8px;background:linear-gradient(92deg,#f3f4fa,#e6eaf4);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(226,192,107,.08)}
     .sub{color:var(--muted);max-width:780px;margin:0 auto}
-
     .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:18px}
     .card{grid-column:span 6;background:linear-gradient(180deg,#0a0d13,#080b10);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:.35s cubic-bezier(.2,.8,.2,1)}
     .card::after{content:"";position:absolute;inset:-40%;background:radial-gradient(320px 180px at var(--mx,60%) var(--my,40%),rgba(226,192,107,.28),transparent 60%);opacity:0;transition:.25s;pointer-events:none}
     .card:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 18px 50px rgba(0,0,0,.6)}
     .card:hover::after{opacity:.9}
     @media(max-width:900px){.card{grid-column:span 12}}
-
     .tag{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:#0b0c10;background:linear-gradient(180deg,var(--gold),var(--gold-2))}
     .title{margin:12px 0 6px;font-size:clamp(20px,2.5vw,26px);font-family:"Cinzel",serif;font-weight:800;letter-spacing:.01em;background:linear-gradient(92deg,#f3f4fa,#d8def0);-webkit-background-clip:text;background-clip:text;color:transparent}
     .copy{color:#e8ecf6}
     .orn{width:96px;height:10px;margin:12px auto;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(226,192,107,.65),transparent)}
     .price-line{display:flex;justify-content:center;gap:8px;margin-top:8px;font-weight:800;color:#f5f7fd}
-    .mini-cta{position:relative;z-index:2;margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));font-weight:800}
+    .mini-cta{position:relative;z-index:2; /* NEW: поверх бликов */ margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));font-weight:800}
     .mini-cta:hover{border-color:rgba(255,255,255,.26)}
     .card.universal{grid-column:span 12}
     .card.universal .tag{background:linear-gradient(180deg,rgba(226,192,107,.9),rgba(173,139,63,.9))}
-
     .contact{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:16px}
     .panel{background:linear-gradient(180deg,#0a0d13,#080b10);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
     .panel.form{grid-column:span 6} .panel.benefits{grid-column:span 6;text-align:left}
     @media(max-width:900px){.panel.form,.panel.benefits{grid-column:span 12}}
-
     label{display:block;font-weight:800;margin:8px 0}
     input,textarea{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:12px 14px;outline:none;font:inherit;transition:border-color .2s,box-shadow .2s}
-    textarea{min-height:120px;resize:vertical}
-    input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(226,192,107,.18)}
-
+    textarea{min-height:120px;resize:vertical} input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(226,192,107,.18)}
     .select{position:relative;user-select:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:0;color:var(--ink)}
     .select-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 14px;background:transparent;border:0;color:inherit;font:inherit;border-radius:14px;cursor:pointer}
     .select-btn:focus{outline:none;box-shadow:0 0 0 3px rgba(226,192,107,.18)}
-    .select-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--chip);color:var(--ink);border:1px solid #223149;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.6);padding:6px;display:none;z-index:20;max-height:240px;overflow:auto}
+    .select-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--chip);color:var(--ink);border:1px solid #223149;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.6);padding:6px;display:none;з-index:20;max-height:240px;overflow:auto}
     .select.open .select-list{display:block}
     .option{text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer}
     .option[aria-selected="true"],.option:hover{background:#0b0f1d}
     .select .chev{width:18px;height:18px;flex:0 0 18px;opacity:.8}
-
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media(max-width:680px){.form-row{grid-template-columns:1fr}}
-
     .submit{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:999px;font-weight:900;border:0;color:#0b0c10;background:linear-gradient(180deg,var(--gold),var(--gold-2)),radial-gradient(120% 180% at 50% -40%,rgba(255,255,255,.3),transparent 60%);box-shadow:var(--shadow);transition:.3s}
     .submit:hover{transform:translateY(-1px);box-shadow:0 16px 44px rgba(226,192,107,.26)}
     .note{margin-top:8px;color:var(--muted);font-size:14px;text-align:center}
-
-    footer{padding:28px 0 48px;color:#93a4ba}
-    .foot{display:flex;align-items:center;justify-content:center;gap:12px}
-    .foot img{width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 1px rgba(226,192,107,.45)}
-    .foot b{font-family:"Cinzel",serif}
-
-    .reveal{opacity:0;transform:translateY(16px);transition:.8s cubic-bezier(.2,.8,.2,1)}
-    .reveal.in{opacity:1;transform:none}
+    footer{padding:28px 0 48px;color:#93a4ba}.foot{display:flex;align-items:center;justify-content:center;gap:12px}
+    .foot img{width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 1px rgba(226,192,107,.45)} .foot b{font-family:"Cinzel",serif}
+    .reveal{opacity:0;transform:translateY(16px);transition:.8s cubic-bezier(.2,.8,.2,1)} .reveal.in{opacity:1;transform:none}
     @media (prefers-reduced-motion:reduce){#bgfx{opacity:.35}.spin{animation:none}.reveal{opacity:1;transform:none}}
   </style>
 </head>
 <body>
-  <!-- Прелоадер -->
+  <!-- Прелоадер: только альтернативный спиннер -->
   <div id="preloader" aria-live="polite" aria-busy="true">
-    <div class="holder"><div class="spinner" role="img" aria-label="Загрузка"></div></div>
+    <div class="holder">
+      <div class="spinner" role="img" aria-label="Загрузка"></div>
+    </div>
   </div>
 
   <div class="progress" id="progress"></div>
@@ -202,9 +149,7 @@
       <div class="actions">
         <a class="btn ghost" href="https://t.me/graal.studio" target="_blank" rel="noopener">
           <span class="tg" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M9.5 15.3l-.2 3c.3 0 .5-.1.6-.2l1.4-1.3 2.9 2.1c.5.3.9.1 1-.5l2-9.6c.2-.8-.3-1.1-.8-1L4.7 10c-.8.2-.8.6-.1.8l3.5 1.1 8.1-5.1-6.7 6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9.5 15.3l-.2 3c.3 0 .5-.1.6-.2l1.4-1.3 2.9 2.1c.5.3.9.1 1-.5l2-9.6c.2-.8-.3-1.1-.8-1L4.7 10c-.8.2-.8.6-.1.8л3.5 1.1 8.1-5.1-6.7 6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>Telegram
         </a>
         <a class="btn ghost" href="#contact">Связаться</a>
@@ -390,7 +335,7 @@
     const form=document.getElementById('lead');const note=document.getElementById('formNote');
     form?.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form);const name=String(data.get('name')||'').trim();const contact=String(data.get('contact')||'').trim();if(!name||!contact){note.textContent='Пожалуйста, заполните имя и контакт.';note.style.color='#ffca58';return}const subject=encodeURIComponent('Заявка с проекта Mordred Forge');const body=encodeURIComponent([`Имя: ${name}`,`Контакт: ${contact}`,`Тип: ${data.get('type')}`,`Бюджет: ${data.get('budget')}`,`Сообщение: ${data.get('message')||''}`].join('\n'));location.href=`mailto:hello@graal.studio?subject=${subject}&body=${body}`;note.textContent='Готово! Откроется почтовый клиент.';note.style.color='#28d17c';form.reset()});
 
-    /* Мини-CTA */
+    /* NEW: мини-кнопки ведут к анкете + подставляем тип проекта */
     document.querySelectorAll('.mini-cta').forEach(btn=>{
       btn.addEventListener('click',e=>{
         e.preventDefault();
@@ -405,12 +350,13 @@
 
     document.getElementById('year').textContent=new Date().getFullYear();
 
-    /* Скрываем прелоадер после полной загрузки */
+    /* === Скрываем прелоадер сразу после полной загрузки страницы === */
     window.addEventListener('load', () => {
       document.getElementById('preloader')?.classList.add('hidden');
     });
   </script>
 
+  <!-- Fallback при отключённом JS: не показывать прелоадер -->
   <noscript><style>#preloader{display:none}</style></noscript>
 </body>
 </html>
