@@ -1,19 +1,32 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mordred Forge — проекты со смыслом</title>
   <meta name="description" content="Mordred Forge: лендинги, школьные ресурсы, свадебные мини-порталы и корпоративные веб-площадки. Тёмно-золотая эстетика, анимированный фон и читабельные шрифты." />
+
+  <!-- Google Fonts для доп. текста -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
+    /* === 1) ЛОКАЛЬНЫЙ ШРИФТ (ИСПРАВЛЕНО): @font-face внутри style === */
+    @font-face {
+      font-family: 'Vinque Rg';
+      src: url('Vinque Rg.woff2') format('woff2'),
+           url('Vinque Rg.woff') format('woff'),
+           url('Vinque Rg.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root{
       --bg:#07090c; --ink:#ecf1f8; --muted:#a9b5c9; --gold:#e2c06b; --gold-2:#ad8b3f;
       --line:#1a2230; --radius:20px; --shadow:0 24px 70px rgba(0,0,0,.7); --chip:#0d1322;
-
-      /* УКАЖИ СВОЙ ФАЙЛ ЛОГОТИПА ДЛЯ ФОНА: PNG/SVG рядом со страницей */
+      /* УКАЖИ СВОЙ ФАЙЛ ЛОГОТИПА ДЛЯ ФОНА */
       --logo-bg: url("logo-bg.png");
     }
 
@@ -22,23 +35,19 @@
     html{scroll-behavior:smooth}
 
     body{
-      margin:0;color:var(--ink);
-      font:16px/1.65 Manrope,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      background:var(--bg);
-      overflow-x:hidden;text-align:center; position:relative;
-    }
-
-    /* === БОЛЬШОЙ РАЗМЫТЫЙ ФОН ИЗ ЛОГОТИПА (ТОЧНО ВИДЕН) === */
+  margin:0;
+  color:var(--ink);
+  font:16px/1.65 'Vinque Rg', serif;
+  background:var(--bg);
+  overflow-x:hidden;
+  text-align:center;
+  position:relative;
+}
+    /* Размытый фон из лого */
     body::before{
-      content:"";
-      position:fixed; inset:-15%;
-      z-index:-2; /* ЛОГОТИП выше #bgdark (-3), ниже canvas (-1) */
-      pointer-events:none;
+      content:""; position:fixed; inset:-15%; z-index:-2; pointer-events:none;
       background: var(--logo-bg) no-repeat center;
-      background-size: 120vmin;   /* размер лого на экране */
-      filter: blur(46px);
-      opacity:.22;                /* при желании увеличь/уменьши */
-      transform: translateZ(0);
+      background-size:120vmin; filter: blur(46px); opacity:.22; transform: translateZ(0);
     }
     @media (max-width:680px){
       body::before{ background-size:150vmin; filter:blur(38px); opacity:.18; }
@@ -47,36 +56,28 @@
     a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
     .wrap{width:min(1120px,92vw);margin-inline:auto;padding-inline:22px}
 
-    /* СЛОИ ФОНА */
-    #bgdark{position:fixed;inset:0;z-index:-3; /* ниже логотипа */
-      background:radial-gradient(55% 50% at 50% 45%,#05070a 0%,#020305 70%)}
-    #bgfx{position:fixed;inset:0;z-index:-1; /* выше логотипа */
-      pointer-events:none;mix-blend-mode:screen;opacity:.78}
+    /* Слои фона */
+    #bgdark{position:fixed;inset:0;z-index:-3;background:radial-gradient(55% 50% at 50% 45%,#05070a 0%,#020305 70%)}
+    #bgfx{position:fixed;inset:0;z-index:-1;pointer-events:none;mix-blend-mode:screen;opacity:.78}
 
     .progress{
-      position:fixed; inset:0 0 auto 0;
-      height:3px;background:linear-gradient(90deg,transparent,var(--gold));
+      position:fixed; inset:0 0 auto 0; height:3px;
+      background:linear-gradient(90deg,transparent,var(--gold));
       transform-origin:0 50%; transform:scaleX(0);
       z-index:50; box-shadow:0 0 16px rgba(226,192,107,.35)
     }
 
-    /* === Простой прелоадер: только спиннер === */
-    #preloader{
-      position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-      background:#07090c; z-index:9999;
-      transition:opacity .35s ease, visibility .35s ease;
-    }
+    /* Прелоадер */
+    #preloader{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+      background:#07090c; z-index:9999; transition:opacity .35s ease, visibility .35s ease;}
     #preloader.hidden{opacity:0; visibility:hidden}
     #preloader .holder{display:grid;place-items:center}
-    .spinner{
-      width:56px; height:56px; border-radius:50%;
-      border:6px solid rgba(226,192,107,.25);
-      border-top-color:rgba(226,192,107,.9);
-      animation:spin .9s linear infinite;
-    }
+    .spinner{width:56px; height:56px; border-radius:50%;
+      border:6px solid rgba(226,192,107,.25); border-top-color:rgba(226,192,107,.9);
+      animation:spin .9s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg)}}
     @media (prefers-reduced-motion:reduce){
-      #preloader{transition:none}
-      .spinner{animation:none}
+      #preloader{transition:none}.spinner{animation:none}
     }
 
     header{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px) saturate(120%);
@@ -100,7 +101,19 @@
 
     .hero{position:relative;padding:clamp(64px,7vw,96px) 0 16px}
     .kicker{color:var(--muted);text-transform:uppercase;letter-spacing:.18em;font-size:12px}
-    h1{font-family:"Cinzel",serif;font-weight:900;letter-spacing:.01em;font-size:clamp(38px,6vw,72px);line-height:1.06;margin:8px 0 10px;background:linear-gradient(92deg,var(--ink),#f5f7fd);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 28px rgba(0,0,0,.65)}
+
+    /* === 2) ПРИМЕНЯЕМ НОВЫЙ ШРИФТ === */
+    h1{
+      font-family:"Vinque Rg","Cinzel",serif;
+      font-weight:400;
+      letter-spacing:.01em;
+      font-size:clamp(38px,6vw,72px);
+      line-height:1.06;margin:8px 0 10px;
+      background:linear-gradient(92deg,var(--ink),#f5f7fd);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      text-shadow:0 2px 28px rgba(0,0,0,.65)
+    }
+
     .lead{max-width:900px;margin:0 auto;font-size:clamp(17px,2.2vw,20px);font-weight:600;color:#e3e8f3;text-shadow:0 1px 16px rgba(0,0,0,.55)}
 
     .halo{position:absolute;inset:auto 0 0 0;height:140px;margin:auto;z-index:0;pointer-events:none;opacity:.25;filter:blur(20px)}
@@ -111,7 +124,14 @@
     @media (max-width:680px){.ornament-wrap{opacity:.08}.ornament{width:120vw}}
 
     .section{padding:clamp(28px,5vw,48px) 0}
-    .section h2{font-family:"Cinzel",serif;font-weight:800;letter-spacing:.01em;font-size:clamp(26px,4.2vw,44px);margin:0 0 8px;background:linear-gradient(92deg,#f3f4fa,#e6eaf4);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(226,192,107,.08)}
+    .section h2{
+      font-family:"Vinque Rg","Cinzel",serif; /* заголовки секций тоже новым шрифтом */
+      font-weight:400; letter-spacing:.01em;
+      font-size:clamp(26px,4.2vw,44px); margin:0 0 8px;
+      background:linear-gradient(92deg,#f3f4fa,#e6eaf4);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      text-shadow:0 0 18px rgba(226,192,107,.08)
+    }
     .sub{color:var(--muted);max-width:780px;margin:0 auto}
 
     .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:18px}
@@ -165,6 +185,37 @@
     .reveal{opacity:0;transform:translateY(16px);transition:.8s cubic-bezier(.2,.8,.2,1)}
     .reveal.in{opacity:1;transform:none}
     @media (prefers-reduced-motion:reduce){#bgfx{opacity:.35}.spin{animation:none}.reveal{opacity:1;transform:none}}
+
+    /* === Блок преимуществ (Путь Мордреда) === */
+    .benefits-block{
+      background:linear-gradient(180deg,#0a0d13,#080b10);
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+    .benefits-header{
+      display:flex; align-items:center; justify-content:center;
+      gap:14px; margin-bottom:16px;
+    }
+    .benefits-header h2{margin:0}
+    .benefits-shield{
+      height:7em; width:auto; display:inline-block;
+      filter:drop-shadow(0 0 8px rgba(226,192,107,.4));
+    }
+    .benefits-lead{max-width:900px;margin:0 auto;color:#e8ecf6}
+    .benefits-list{
+      list-style:none; padding:0; margin:28px auto; max-width:900px;
+      display:grid; gap:14px;
+    }
+    .benefits-list li {
+      display:flex; justify-content:center; align-items:center;
+      gap:10px; text-align:center;
+    }
+    .benefits-list img{
+      height:3em; width:auto; flex-shrink:0;
+      filter:drop-shadow(0 0 6px rgba(226,192,107,.5));
+    }
+    .benefits-list b{color:var(--gold)}
+    .benefits-note{font-style:italic; margin-top:22px; color:var(--muted)}
   </style>
 </head>
 <body>
@@ -197,7 +248,7 @@
   <header>
     <div class="wrap nav">
       <a class="brand" href="#top" aria-label="Mordred Forge">
-        <img src="logo.png" alt="Mordred Forge логотип"><b>Mordred Forge</b>
+        <img src="logo.png" alt="Mordred Forge логотип" loading="lazy"><b>Mordred Forge</b>
       </a>
       <div class="actions">
         <a class="btn ghost" href="https://t.me/graal.studio" target="_blank" rel="noopener">
@@ -271,6 +322,33 @@
     </div>
   </section>
 
+  <!-- Блок преимуществ -->
+  <section class="section benefits-block" id="mordred-benefits">
+    <div class="wrap">
+      <div class="benefits-header reveal">
+        <img src="shield.png" alt="Щит" class="benefits-shield" loading="lazy">
+        <h2>Преимущества — путь Мордреда</h2>
+      </div>
+
+      <p class="benefits-lead sub reveal">
+        Мы не строим сайты на шаблонах. Мы куем их, как мечи в кузне, — из чистого кода, где каждая строка проверена и отточена.
+      </p>
+
+      <ul class="benefits-list reveal">
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Скорость удара.</b> Наш сайт открывается быстрее, чем опускается забрало — без тяжёлых плагинов и лишнего груза.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Надёжность брони.</b> Нет скрытых механизмов и движков, которые могут сломаться. Ваш ресурс стоит прочно, как башня.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Власть над формой.</b> Мы не идём по проторённым тропам шаблонов: дизайн и анимации будут уникальны, как герб на щите.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Чистый след.</b> Код прозрачен и понятен — поисковики читают его, как древние хроники, и поднимают сайт выше.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Неприступность крепости.</b> У статического сайта нет уязвимых ворот для врагов — безопасность в самой его природе.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Сайт — только ваш.</b> Он не принадлежит платформе или конструктору. Никто и никогда не сможет забрать его у вас.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Поддержка соратников.</b> По договорённости мы будем обновлять и укреплять сайт, чтобы он рос и менялся вместе с вами.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Щит в любой битве.</b> Сайт одинаково удобен и красив на экранах компьютеров, планшетов и смартфонов.</span></li>
+      </ul>
+
+      <p class="benefits-note">Меньше магии — больше силы. Ресурс служит своему хозяину, а не системе.</p>
+    </div>
+  </section>
+
   <section class="section wrap" id="contact">
     <h2 class="reveal">Связаться с нами</h2>
     <p class="sub reveal">Расскажите пару деталей — ответим тем же днём и предложим лучший формат.</p>
@@ -333,16 +411,15 @@
       </form>
 
       <aside class="panel benefits reveal">
-        <h3 style="margin:0 0 6px;font-family:'Cinzel',serif;font-weight:800">Наши преимущества</h3>
+        <h3 style="margin:0 0 6px;font-family:'Cinzel',serif;font-weight:800">Сила в деталях</h3>
         <ul style="list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px">
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Начинаем с диалога.</b> Сначала цель, аудитория и история бренда — потом макеты и код.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Индивидуальный маршрут.</b> Подбираем эстетику, структуру и функции под вашу задачу.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Сопровождение до результата.</b> На связи до запуска и после — мелкие правки включены.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Честные сроки и стоимость.</b> Фиксируем этапы, без скрытых «звёздочек» и доплат.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Лёгкость и скорость.</b> Адаптив на всех устройствах, быстрая загрузка и понятная навигация.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Помощь с текстами.</b> Перепишем и упростим формулировки — без канцелярита.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Аналитика и заявки.</b> Подключаем отслеживание, сообщения приходят в один клик.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Гибкие пакеты.</b> Найдём конфигурацию под любой бюджет — без потери смысла.</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Начинаем с сути.</b> Сначала цель, аудитория и история бренда — потом макеты и код.</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Свой путь.</b> Каждый проект получает уникальную эстетику и структуру, созданные под задачу.</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Верность слову.</b> Держим этапы и договорённости, без скрытых условий и «мелкого шрифта».</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Лёгкость хода.</b> Сайт работает на любом устройстве, загружается быстро и ведёт к цели прямым путём.</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Живое слово.</b> Поможем отточить тексты, убрав лишнее и сделав яснее.</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Гибкость доспеха.</b> Подбираем конфигурацию под разные бюджеты, сохраняя качество и смысл.</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Щит в любой битве.</b> Сайт одинаково удобен и красив на экранах компьютеров, планшетов и смартфонов.</div></li>
         </ul>
       </aside>
     </div>
@@ -350,12 +427,12 @@
 
   <footer>
     <div class="wrap foot">
-      <img src="logo.png" alt="Mordred Forge"><span>© <b id="year"></b> Mordred Forge · Все права защищены</span>
+      <img src="logo.png" alt="Mordred Forge" loading="lazy"><span>© <b id="year"></b> Mordred Forge · Все права защищены</span>
     </div>
   </footer>
 
   <script>
-    /* ===== Canvas фон ===== */
+    /* Canvas фон */
     const c=document.getElementById('bgfx'),ctx=c.getContext('2d');let W,H,DPR=Math.min(devicePixelRatio||1,2);let EMBERS=120,CLOUDS=6,OPACITY=.78;
     function rs(){const isMobile=innerWidth<=680;DPR=Math.min(devicePixelRatio||1,isMobile?1.5:2);EMBERS=isMobile?70:120;CLOUDS=isMobile?4:6;OPACITY=isMobile?.6:.78;c.style.opacity=OPACITY;W=c.width=Math.floor(innerWidth*DPR);H=c.height=Math.floor(innerHeight*DPR);c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';build()}
     const embers=[],clouds=[];function build(){embers.length=0;for(let i=0;i<EMBERS;i++){embers.push({x:Math.random()*W,y:Math.random()*H,r:(Math.random()*1.8+0.7)*DPR,vx:(Math.random()-.5)*.10*DPR,vy:-(Math.random()*.20+.06)*DPR,a:Math.random()*.8+.2})}clouds.length=0;for(let i=0;i<CLOUDS;i++){clouds.push({x:Math.random()*W,y:Math.random()*H,rx:(500+Math.random()*480)*DPR,ry:(320+Math.random()*260)*DPR,hue:i%2?45:240,alpha:.07+Math.random()*.05,driftX:(Math.random()-.5)*.05*DPR,driftY:(Math.random()-.5)*.035*DPR})}}
