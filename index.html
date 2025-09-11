@@ -33,7 +33,7 @@
     html,body{height:100%}
     html{scroll-behavior:smooth}
 
-    /* Весь текст сайту — Vinque Rg (как просил ранее) */
+    /* Весь текст — Vinque Rg */
     body{
       margin:0;color:var(--ink);
       font:16px/1.65 'Vinque Rg', serif;
@@ -193,12 +193,12 @@
     .benefits-shield{
       height:7em; width:auto; display:inline-block;
       position:relative; isolation:isolate;
-      /* 1) Мягкое парение + пульс свечения */
+      /* Мягкое парение + пульс свечения */
       animation: floatY 6s ease-in-out infinite, glowPulse 5.5s ease-in-out infinite;
       transition: transform .25s ease;
       filter:drop-shadow(0 0 8px rgba(226,192,107,.35));
     }
-    /* 2) Рыцарский блик по ховеру */
+    /* Рыцарский блик по ховеру */
     .benefits-shield::after{
       content:""; position:absolute; inset:-15% -40%;
       background:linear-gradient(110deg, transparent 35%, rgba(255,255,255,.18) 50%, transparent 65%);
@@ -209,7 +209,7 @@
     .benefits-shield:hover::after{
       opacity:.9; animation:shieldShine 900ms cubic-bezier(.2,.8,.2,1);
     }
-    /* 3) Выплытие из тьмы при появлении секции */
+    /* Выплытие из тьмы при появлении секции */
     .benefits-header.reveal .benefits-shield{opacity:0; transform:scale(.94)}
     .benefits-header.reveal.in .benefits-shield{
       animation: shieldIn .7s cubic-bezier(.2,.8,.2,1) both .05s, floatY 6s ease-in-out infinite .75s, glowPulse 5.5s ease-in-out infinite .8s;
@@ -227,22 +227,23 @@
     }
 
     .benefits-lead{max-width:900px;margin:0 auto;color:#e8ecf6}
+
+    /* ВЫРОВНЯННЫЙ СПИСОК */
     .benefits-list{
       list-style:none; padding:0; margin:28px auto; max-width:900px;
-      display:grid; gap:14px;
+      display:flex; flex-direction:column; gap:18px;
     }
-    .benefits-list li {
-      display:flex; justify-content:center; align-items:center;
-      gap:10px; text-align:center;
+    .benefits-list li{
+      display:flex; align-items:flex-start; gap:14px; text-align:left;
     }
     .benefits-list img{
-      height:3em; width:auto; flex-shrink:0;
+      width:32px; height:auto; flex-shrink:0;
       filter:drop-shadow(0 0 6px rgba(226,192,107,.5));
     }
     .benefits-list b{color:var(--gold)}
     .benefits-note{font-style:italic; margin-top:22px; color:var(--muted)}
 
-    /* === Новый финальный блок-акцент === */
+    /* === Финальный блок-акцент: варианты === */
     .about-pitch{
       position:relative;
       background:linear-gradient(180deg,#0a0d13,#080b10);
@@ -251,22 +252,11 @@
       padding:clamp(28px,6vw,56px) 0;
       overflow:hidden;
     }
-    .about-pitch .inner{
-      width:min(980px,92vw); margin:0 auto; padding-inline:22px;
-    }
+    .about-pitch .inner{ width:min(980px,92vw); margin:0 auto; padding-inline:22px; }
     .about-box{
-      position:relative;
-      margin:0 auto; max-width:820px;
-      padding:28px 22px;
-      border:1px solid rgba(226,192,107,.28);
-      border-radius:18px;
-      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
-      box-shadow:0 24px 60px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.02);
-    }
-    .about-box::before{
-      content:""; display:block; width:120px; height:2px; margin:0 auto 16px;
-      background:linear-gradient(90deg,transparent,rgba(226,192,107,.75),transparent);
-      border-radius:999px;
+      position:relative; margin:0 auto; max-width:820px;
+      padding:24px 22px;
+      border-radius:14px;
     }
     .about-lines{
       font-size:clamp(18px,2.2vw,22px);
@@ -274,12 +264,28 @@
       text-shadow:0 1px 16px rgba(0,0,0,.55);
       display:grid; gap:10px;
     }
-    .about-lines b{color:var(--gold)}
-    .about-pitch .glow{
-      position:absolute; inset:auto 0 -20% 0; height:200px; pointer-events:none;
-      background:radial-gradient(60% 50% at 50% 0%, rgba(226,192,107,.18), rgba(226,192,107,0));
-      filter:blur(18px);
+
+    /* Вариант 1 (по умолчанию): тонкая прямоугольная рамка у текста */
+    .about-pitch.variant-gilded .about-box{
+      border:1px solid rgba(226,192,107,.45);
+      background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
     }
+    .about-pitch .glow{ display:none; } /* убрал широкое внешнее свечение */
+
+    /* Вариант 2: «баннер» — узкие золотые ленты сверху/снизу */
+    .about-pitch.variant-banner .about-box{
+      border:1px solid rgba(226,192,107,.38);
+      background:linear-gradient(180deg,rgba(255,255,255,.015),rgba(255,255,255,.008));
+    }
+    .about-pitch.variant-banner .about-box::before,
+    .about-pitch.variant-banner .about-box::after{
+      content:""; position:absolute; left:16px; right:16px; height:2px;
+      background:linear-gradient(90deg,transparent,rgba(226,192,107,.8),transparent);
+      border-radius:999px;
+    }
+    .about-pitch.variant-banner .about-box::before{ top:10px; }
+    .about-pitch.variant-banner .about-box::after{ bottom:10px; }
   </style>
 </head>
 <body>
@@ -318,7 +324,7 @@
         <a class="btn ghost" href="https://t.me/graal.studio" target="_blank" rel="noopener">
           <span class="tg" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
-              <path d="M9.5 15.3l-.2 3c.3 0 .5-.1.6-.2л1.4-1.3 2.9 2.1c.5.3.9.1 1-.5l2-9.6c.2-.8-.3-1.1-.8-1L4.7 10c-.8.2-.8.6-.1.8l3.5 1.1 8.1-5.1-6.7 6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.5 15.3l-.2 3c.3 0 .5-.1.6-.2l1.4-1.3 2.9 2.1c.5.3.9.1 1-.5l2-9.6c.2-.8-.3-1.1-.8-1L4.7 10c-.8.2-.8.6-.1.8l3.5 1.1 8.1-5.1-6.7 6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>Telegram
         </a>
@@ -336,7 +342,7 @@
 
   <section class="section wrap" id="work">
     <h2 class="reveal">Наши решения</h2>
-    <p class="sub reveal">Форматы под разные задачи. Прозрачные цены — в USD и BYN.</p>
+    <p class="sub reveal">Форматы под разные задачи. Стоимость не включает расходы на хостинг и домен.</p>
 
     <div class="grid">
       <article class="card reveal" style="transition-delay:.05s">
@@ -399,12 +405,12 @@
       </p>
 
       <ul class="benefits-list reveal">
-        <li><img src="sword.png" alt="" loading="lazy"><span><b>Скорость удара.</b> Наш сайт открывается быстрее, чем опускается забрало — без тяжёлых плагинов и лишнего груза.</span></li>
-        <li><img src="sword.png" alt="" loading="lazy"><span><b>Надёжность брони.</b> Нет скрытых механизмов и движков, которые могут сломаться. Ваш ресурс стоит прочно, как башня.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Скорость удара.</b> Наш сайт открывается быстрее, чем падает забрало — без тяжёлых плагинов и лишнего груза.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Надёжность брони.</b> Нет скрытых механизмов и движков, что могут сломаться. Ваш ресурс стоит прочно, как башня.</span></li>
         <li><img src="sword.png" alt="" loading="lazy"><span><b>Власть над формой.</b> Мы не идём по проторённым тропам шаблонов: дизайн и анимации будут уникальны, как герб на щите.</span></li>
         <li><img src="sword.png" alt="" loading="lazy"><span><b>Чистый след.</b> Код прозрачен и понятен — поисковики читают его, как древние хроники, и поднимают сайт выше.</span></li>
         <li><img src="sword.png" alt="" loading="lazy"><span><b>Неприступность крепости.</b> У статического сайта нет уязвимых ворот для врагов — безопасность в самой его природе.</span></li>
-        <li><img src="sword.png" alt="" loading="lazy"><span><b>Сайт — только ваш.</b> Он не принадлежит платформе или конструктору. Никто и никогда не сможет забрать его у вас.</span></li>
+        <li><img src="sword.png" alt="" loading="lazy"><span><b>Сайт — только ваш.</b> Он не принадлежит платформе или конструктору. Никто не сможет забрать его у вас.</span></li>
         <li><img src="sword.png" alt="" loading="lazy"><span><b>Поддержка соратников.</b> По договорённости мы будем обновлять и укреплять сайт, чтобы он рос и менялся вместе с вами.</span></li>
         <li><img src="sword.png" alt="" loading="lazy"><span><b>Щит в любой битве.</b> Сайт одинаково удобен и красив на экранах компьютеров, планшетов и смартфонов.</span></li>
       </ul>
@@ -413,8 +419,8 @@
     </div>
   </section>
 
-  <!-- НОВЫЙ ФИНАЛЬНЫЙ БЛОК -->
-  <section class="about-pitch" id="about-pitch">
+  <!-- ФИНАЛЬНЫЙ БЛОК (по умолчанию вариант 1: gilded) -->
+ <section class="about-pitch variant-banner" id="about-pitch">
     <div class="inner">
       <div class="about-box reveal">
         <div class="about-lines">
@@ -492,7 +498,7 @@
         <h3 style="margin:0 0 6px;font-family:'Cinzel',serif;font-weight:800">Сила в деталях</h3>
         <ul style="list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px">
           <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Начинаем с сути.</b> Сначала цель, аудитория и история бренда — потом макеты и код.</div></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Свой путь.</b> Каждый проект получает уникальную эстетику и структуру, созданные под задачу.</div></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Право выбора — за вами.</b> Вы задаёте всё: шрифты, цвета, сетку, иконки, иллюстрации, анимации и микроэффекты — мы куём под ваш вкус и цель.</div></li>
           <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Верность слову.</b> Держим этапы и договорённости, без скрытых условий и «мелкого шрифта».</div></li>
           <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Лёгкость хода.</b> Сайт работает на любом устройстве, загружается быстро и ведёт к цели прямым путём.</div></li>
           <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold)">✦</span><div><b>Живое слово.</b> Поможем отточить тексты, убрав лишнее и сделав яснее.</div></li>
@@ -522,7 +528,7 @@
       card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});
     });
 
-    /* Reveal (как было) */
+    /* Reveal */
     const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
